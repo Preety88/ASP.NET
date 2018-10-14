@@ -1,0 +1,40 @@
+﻿
+@(Html.Kendo().Grid<TelerikMvc.Models.Employee>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+        columns.Bound(c => c.FirstName);
+        columns.Bound(c => c.LastName);
+        columns.Bound(c => c.MiddleName);
+        columns.Bound(c => c.Phone);
+        columns.Bound(c => c.Salary);
+        columns.Bound(c => c.Email);
+        columns.Command(command => { command.Edit(); command.Destroy(); }).Width(180);
+      })
+      .ToolBar(toolbar => {
+            toolbar.Create();
+            toolbar.Excel();
+            toolbar.Pdf();
+      })
+      .ColumnMenu()
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Pageable()
+      .Navigatable()
+      .Selectable(selectable => {
+            selectable.Mode(GridSelectionMode.Single);
+            selectable.Type(GridSelectionType.Row);
+      })
+      .Sortable(sortable => {
+          sortable.SortMode(GridSortMode.SingleColumn);
+      })
+      .Filterable()
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .Model(model => model.Id(p => p.EmpId))
+          .Read(read => read.Action("Employees_Read", "Employee"))
+          .Create(create => create.Action("Employees_Create", "Employee"))
+          .Update(update => update.Action("Employees_Update", "Employee"))
+          .Destroy(destroy => destroy.Action("Employees_Destroy", "Employee"))
+      )
+)
